@@ -2,11 +2,6 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
-
-// Second variant with
-// export const router = express.Router();
-// import { router } from './routers/students.js';
-
 import studentsRouter from './routers/students.js';
 import {
   notFoundMiddleware,
