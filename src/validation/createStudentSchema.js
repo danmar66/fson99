@@ -1,15 +1,39 @@
 import Joi from 'joi';
 
 export const createStudentSchema = Joi.object({
-  name: Joi.string().min(3).max(30).required().messages({
-    'string.base': 'Username should be a string', // Кастомізація повідомлення для типу "string"
-    'string.min': 'Username should have at least {#limit} characters',
-    'string.max': 'Username should have at most {#limit} characters',
-    'any.required': 'Username is required',
+  name: Joi.string().required().min(2).max(20).messages({
+    'string.base': 'Name must be a string',
+    'string.min': 'Name must be at least 2 symbols',
+    'string.max': 'Name must be less than 20 symbols',
+    'any.required': 'Name is required',
   }),
-  email: Joi.string().email().required(),
-  age: Joi.number().integer().min(6).max(16).required(),
-  gender: Joi.string().valid('male', 'female', 'other').required(),
-  avgMark: Joi.number().min(2).max(12).required(),
+  //   email: Joi.string().required().email(),
+  age: Joi.number().integer().required().min(18),
+  gender: Joi.string().required().valid('male', 'female', 'other'),
+  avgMark: Joi.number().required().min(2).max(12),
   onDuty: Joi.boolean(),
 });
+
+/*
+const data = {
+  email: 'marchenkodanil97@gmail.com',
+  name: 'Daniel',
+  age: 27,
+  gender: 'male',
+  avgMark: 10.2,
+};
+
+/*
+validate(data, { convert: false });
+вказувати для того, щоб не приводити до вказаних в схемі типів
+
+const validationResult = createStudentShema.validate(data, {
+  abortEarly: false,
+});
+
+if (validationResult.error) {
+  console.error(validationResult.error.message);
+} else {
+  console.log('Data is valid');
+}
+*/
