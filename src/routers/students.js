@@ -12,32 +12,32 @@ import { validateMongoId, validateBody } from '../middlewares/index.js';
 import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
 
-const router = Router();
+const studentsRouter = Router();
 
-router.use('/students/:studentId', validateMongoId('studentId'));
+studentsRouter.use('/:studentId', validateMongoId('studentId'));
 
-router.get('/students', ctrlWrapper(getAllStudentsController));
+studentsRouter.get('/', ctrlWrapper(getAllStudentsController));
 
-router.get('/students/:studentId', ctrlWrapper(getStudentByIdController));
+studentsRouter.get('/:studentId', ctrlWrapper(getStudentByIdController));
 
-router.post(
-  '/students',
+studentsRouter.post(
+  '/',
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
 
-router.delete('/students/:studentId', ctrlWrapper(deleteStudentController));
+studentsRouter.delete('/:studentId', ctrlWrapper(deleteStudentController));
 
-router.put(
-  '/students/:studentId',
+studentsRouter.put(
+  '/:studentId',
   validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
 );
 
-router.patch(
-  '/students/:studentId',
+studentsRouter.patch(
+  '/:studentId',
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
 
-export default router;
+export default studentsRouter;
