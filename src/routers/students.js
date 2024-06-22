@@ -11,33 +11,38 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateMongoId, validateBody } from '../middlewares/index.js';
 import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { checkChildPermission } from '../middlewares/checkChildPermission.js';
 
-const router = Router();
+const studentsRouter = Router();
 
-router.use('/students/:studentId', validateMongoId('studentId'));
+studentsRouter.use('/:studentId', validateMongoId('studentId'));
 
-router.get('/students', ctrlWrapper(getAllStudentsController));
+studentsRouter.use('/', authenticate);
 
-router.get('/students/:studentId', ctrlWrapper(getStudentByIdController));
+studentsRouter.get('/', ctrlWrapper(getAllStudentsController));
 
-router.post(
-  '/students',
+studentsRouter.get('/:studentId', ctrlWrapper(getStudentByIdController));
+
+studentsRouter.post(
+  '/',
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
 
-router.delete('/students/:studentId', ctrlWrapper(deleteStudentController));
+studentsRouter.delete('/:studentId', ctrlWrapper(deleteStudentController));
 
-router.put(
-  '/students/:studentId',
+studentsRouter.put(
+  '/:studentId',
   validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
 );
 
-router.patch(
-  '/students/:studentId',
+studentsRouter.patch(
+  '/:studentId',
+  checkChildPermission('teacher', 'parent'),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
 
-export default router;
+export default studentsRouter;

@@ -8,6 +8,7 @@ export const getAllStudents = async ({
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
   filter = {},
+  userId,
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
@@ -29,6 +30,8 @@ export const getAllStudents = async ({
   if (filter.minAvgMark) {
     studentsQuery.where('avgMark').gte(filter.minAvgMark);
   }
+
+  studentsQuery.where('parentId').equals(userId);
 
   /*
   Variant 1 - Find students without Promise.all()
@@ -65,8 +68,11 @@ export const getStudentById = async (studentId) => {
   return student;
 };
 
-export const createStudent = async (payload) => {
-  const student = await StudentsCollection.create(payload);
+export const createStudent = async (payload, userId) => {
+  const student = await StudentsCollection.create({
+    ...payload,
+    parentId: userId,
+  });
   return student;
 };
 
