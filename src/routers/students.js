@@ -11,10 +11,14 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateMongoId, validateBody } from '../middlewares/index.js';
 import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { updateStudentSchema } from '../validation/updateStudentSchema.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { checkChildPermission } from '../middlewares/checkChildPermission.js';
 
 const studentsRouter = Router();
 
 studentsRouter.use('/:studentId', validateMongoId('studentId'));
+
+studentsRouter.use('/', authenticate);
 
 studentsRouter.get('/', ctrlWrapper(getAllStudentsController));
 
@@ -36,6 +40,7 @@ studentsRouter.put(
 
 studentsRouter.patch(
   '/:studentId',
+  checkChildPermission('teacher', 'parent'),
   validateBody(updateStudentSchema),
   ctrlWrapper(patchStudentController),
 );
