@@ -1,6 +1,7 @@
 import { SORT_ORDER } from '../constants/index.js';
 import { StudentsCollection } from '../db/models/student.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { saveFile } from '../utils/saveFile.js';
 
 export const getAllStudents = async ({
   page = 1,
@@ -68,10 +69,15 @@ export const getStudentById = async (studentId) => {
   return student;
 };
 
-export const createStudent = async (payload, userId) => {
+export const createStudent = async ({ avatar, ...payload }, userId) => {
+  // const url = await saveFileToLocalMachine(avatar);
+  // const url = await saveFileToCloudinary(avatar);
+  const url = await saveFile(avatar);
+
   const student = await StudentsCollection.create({
     ...payload,
     parentId: userId,
+    avatarUrl: url,
   });
   return student;
 };
