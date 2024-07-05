@@ -10,6 +10,10 @@ import { EMAIL_VARS, ENV_VARS, TEMPLATES_DIR } from '../constants/index.js';
 import path from 'path';
 import fs from 'fs/promises';
 import handlebars from 'handlebars';
+import {
+  getFullNameFromGoogleTokenPayload,
+  validateCode,
+} from '../utils/googleOAuth.js';
 
 const createSession = () => {
   return {
@@ -164,4 +168,31 @@ export const resetPassword = async (payload) => {
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
   await User.updateOne({ _id: user._id }, { password: encryptedPassword });
+};
+
+export const loginOrSignupWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code);
+  const payload = loginTicket.getPayload();
+
+  if (!payload) throw createHttpError(401);
+
+  let user = await User.findOne({ email: payload.email });
+
+  if (!user) {
+    const password = await bcrypt.hash(crypto.randomBytes(10), 10);
+
+    user = await User.create({
+      email: payload.email,
+      name: getFullNameFromGoogleTokenPayload(payload),
+      password,
+      role: 'parent',
+    });
+  }
+
+  await Session.deleteOne({ userId: user._id });
+
+  return await Session.create({
+    userId: user._id,
+    ...createSession(),
+  });
 };
