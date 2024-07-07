@@ -1,0 +1,70 @@
+tags:
+  - Students
+summary: Create student
+operationId: createStudent
+description: 'Create a student with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - age
+          - gender
+          - avgMark
+          - parentId
+        properties:
+          name:
+            description: Student's name
+            type: string
+            example: John Doe
+          age:
+            description: "Student's age"
+            type: number
+            example: 12
+          gender:
+            description: "Student's age"
+            type: string
+            enum: ['male', 'female', 'other']
+          avgMark:
+            description: "Student's average mark. Should be between 1 and 12"
+            type: number
+            example: 9.7
+          onDuty:
+            description: 'Whether is student on duty'
+            type: boolean
+            example: false
+          parentId:
+            description: "Student's parent id"
+            type: string
+            example: 65e4decdd286b30065d54af9
+          photo:
+            description: "Student's photo"
+            type: string
+            format: binary
+responses:
+  '201':
+    description: Creates a student
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully created a student!
+            data:
+              type: object
+              $ref: ../../components/schemes/student.yaml
+  '401':
+    $ref: ../../components/responeses/401.yaml

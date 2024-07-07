@@ -1,0 +1,41 @@
+type: object
+required:
+  - _id
+  - name
+  - age
+  - gender
+  - avgMark
+  - onDuty
+properties:
+  _id:
+    description: "Student's id"
+    type: string
+    example: 65ca67e7ae7f10c88b598384
+  name:
+    description: "Student's name"
+    type: string
+    example: 'John Doe'
+  age:
+    description: "Student's age"
+    type: number
+    example: 18
+  gender:
+    description: "Student's age"
+    type: string
+    enum: ['male', 'female', 'other']
+  avgMark:
+    description: "Student's average mark. Should be between 1 and 12"
+    type: number
+    example: 9.7
+  onDuty:
+    description: 'Whether is student on duty'
+    type: boolean
+    example: false
+  parentId:
+    description: "Student's parent id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  photo:
+    description: "Link to student's photo"
+    type: string
+    example: <https://res.cloudinary.com/uqwgdu/image/upload/image.png>

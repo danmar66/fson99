@@ -1,0 +1,38 @@
+tags:
+  - Students
+summary: Get student by id
+operationId: getStudent
+description: 'Get student by id'
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    schema:
+      type: string
+      example: 65ca67e7ae7f10c88b598384
+    description: ID of the student
+responses:
+  '200':
+    description: 'Get student by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Succesfully found student with id 65ca67e7ae7f10c88b598384
+            data:
+              type: object
+              $ref: ../../../components/schemes/student.yaml
+  '401':
+    $ref: ../../../components/responeses/401.yaml
