@@ -7,13 +7,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "keywords": [],
   "author": "Marchenko Daniel <marchenkodanil97@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@redocly/cli": "^1.17.1",
     "eslint": "^9.3.0",
     "globals": "^15.3.0",
     "nodemon": "^3.1.0",
@@ -26,6 +30,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.11.0",
     "handlebars": "^4.7.8",
     "http-errors": "^2.0.0",
     "joi": "^17.13.1",
@@ -33,6 +38,7 @@
     "mongoose": "^8.4.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",
-    "pino-http": "^10.1.0"
+    "pino-http": "^10.1.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }

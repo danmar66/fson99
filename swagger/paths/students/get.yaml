@@ -1,0 +1,109 @@
+tags:
+  - Students
+summary: Get list of Students
+operationId: getStudents
+description: Get list of users with this endpoint
+security:
+  - bearerAuth: []
+parameters:
+  - name: page
+    in: query
+    schema:
+      type: integer
+      example: 1
+  - name: perPage
+    in: query
+    schema:
+      type: integer
+      example: 10
+  - name: sortBy
+    in: query
+    schema:
+      type: string
+      example: 'age'
+    description: "All student's fields can be mentioned. Default value - _id"
+  - name: sortOrder
+    in: query
+    schema:
+      type: string
+      enum: ['asc', 'desc']
+      example: 'asc'
+  - name: minAvgMark
+    in: query
+    schema:
+      type: number
+      example: 4
+  - name: maxAvgMark
+    in: query
+    schema:
+      type: number
+      example: 10
+  - name: minAge
+    in: query
+    schema:
+      type: number
+      example: 10
+  - name: maxAge
+    in: query
+    schema:
+      type: number
+      example: 16
+  - name: gender
+    in: query
+    schema:
+      type: string
+      enum: ['male', 'female', 'other']
+      example: male
+responses:
+  '200':
+    description: Successfully found students!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found students!
+            data:
+              type: object
+              required:
+                - data
+                - page
+                - perPage
+                - totalItems
+                - totalPages
+                - hasNextPage
+                - hasPreviousPage
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: ../../components/schemes/student.yaml
+                page:
+                  type: number
+                  example: 2
+                perPage:
+                  type: number
+                  example: 4
+                totalItems:
+                  type: number
+                  example: 4
+                totalPages:
+                  type: number
+                  example: 4
+                hasNextPage:
+                  type: boolean
+                  example: false
+                hasPreviousPage:
+                  type: boolean
+                  example: true
+  '401':
+    $ref: ../../components/responeses/401.yaml
